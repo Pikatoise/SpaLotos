@@ -1,0 +1,32 @@
+﻿<Window x:Class="SpaLotos.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:SpaLotos"
+        mc:Ignorable="d"
+        Title ="Авторизация" Height="400" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid Background="#530271">
+        <materialDesign:Card x:Name="MainCard" Margin="30" Background="WhiteSmoke">
+            <materialDesign:Card.Effect>
+                <DropShadowEffect x:Name="ef" BlurRadius="30"/>
+            </materialDesign:Card.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <materialDesign:PackIcon Kind="FlowerOutline" Foreground="#7d02ab" Height="100" Width="200" Grid.Row="0" Margin="15 0 0 0"/>
+                
+                <StackPanel Grid.Row="1" Grid.RowSpan="2">
+                    <TextBox x:Name="LoginBox" materialDesign:HintAssist.Hint="Логин" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 10 0 0" Foreground="Black"/>
+                    <PasswordBox x:Name="PasswordBox" materialDesign:HintAssist.Hint="Пароль" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 20 0 0" Foreground="Black"/>
+                    <Button  x:Name="AuthButton" Width="150" Margin="0 35 0 0" Content="Войти" Style="{StaticResource MaterialDesignPaperDarkButton}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</Window>

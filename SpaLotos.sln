@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaLotos", "SpaLotos\SpaLotos.csproj", "{6DD91195-8666-4EED-B181-15A921B8E513}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DD91195-8666-4EED-B181-15A921B8E513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD91195-8666-4EED-B181-15A921B8E513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD91195-8666-4EED-B181-15A921B8E513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD91195-8666-4EED-B181-15A921B8E513}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {934159EA-BBB8-444C-8CEB-0FAD247CDCA4}
+	EndGlobalSection
+EndGlobal
