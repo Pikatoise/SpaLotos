@@ -22,9 +22,10 @@
                 <materialDesign:PackIcon Kind="FlowerOutline" Foreground="#7d02ab" Height="100" Width="200" Grid.Row="0" Margin="15 0 0 0"/>
                 
                 <StackPanel Grid.Row="1" Grid.RowSpan="2">
-                    <TextBox x:Name="LoginBox" materialDesign:HintAssist.Hint="Логин" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 10 0 0" Foreground="Black"/>
-                    <PasswordBox x:Name="PasswordBox" materialDesign:HintAssist.Hint="Пароль" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 20 0 0" Foreground="Black"/>
-                    <Button  x:Name="AuthButton" Width="150" Margin="0 35 0 0" Content="Войти" Style="{StaticResource MaterialDesignPaperDarkButton}"/>
+                    <TextBox x:Name="LoginBox" materialDesign:HintAssist.Hint="Логин" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 10 0 0" Foreground="Black" TextChanged="LoginBox_TextChanged"/>
+                    <PasswordBox x:Name="PasswordBox" materialDesign:HintAssist.Hint="Пароль" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Margin="0 20 0 0" Foreground="Black" PasswordChanged="PasswordBox_PasswordChanged"/>
+                    <Button  x:Name="AuthButton" Width="150" Margin="0 35 0 0" Content="Войти" Style="{StaticResource MaterialDesignPaperDarkButton}" Click="AuthButton_Click"/>
+                    <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Margin="0 20 0 0"/>
                 </StackPanel>
             </Grid>
         </materialDesign:Card>
