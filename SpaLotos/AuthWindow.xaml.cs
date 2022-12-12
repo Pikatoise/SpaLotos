@@ -53,7 +53,7 @@ namespace SpaLotos
 
                 if (role != null)
                 {
-                    MainWindow main = new MainWindow(role);
+                    MainWindow main = new MainWindow(role,db);
                     main.Show();
                     Close();
                 }

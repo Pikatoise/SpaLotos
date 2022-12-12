@@ -18,8 +18,8 @@ namespace SpaLotos
             {
                 try
                 {
-                    connection.Open();
-                    connection.Close();
+                    connection.OpenAsync();
+                    connection.CloseAsync();
                 }
                 catch (Exception e)
                 {
@@ -45,14 +45,14 @@ namespace SpaLotos
 
             try
             {
-                connection.Open();
+                connection.OpenAsync();
 
                 object response = command.ExecuteScalarAsync().Result;
 
                 if (response != null)
                     result = response.ToString();
 
-                connection.Close();
+                connection.CloseAsync();
 
             } catch (Exception e)
             {
