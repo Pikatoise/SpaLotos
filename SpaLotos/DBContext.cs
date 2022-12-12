@@ -49,7 +49,7 @@ namespace SpaLotos
 
                 object response = command.ExecuteScalarAsync().Result;
 
-                if (!(response == null))
+                if (response != null)
                     result = response.ToString();
 
                 connection.Close();
