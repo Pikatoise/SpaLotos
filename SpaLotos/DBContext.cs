@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Windows;
+using System.Data;
 
 namespace SpaLotos
 {
@@ -62,7 +63,27 @@ namespace SpaLotos
             return result;
         }
 
-        public MySqlDataReader MultyRequest()
+        public DataTable TableRequest(string request)
+        {
+            MySqlCommand command = new MySqlCommand(request, connection);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+
+            try
+            {
+                connection.OpenAsync();
+                adapter.Fill(table);
+                connection.CloseAsync();
+
+            } catch(Exception e)
+            {
+                MessageBox.Show($"{e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return table;
+        }
+
+        public MySqlDataReader MultyRequest(string request)
         {
             return null;
         }

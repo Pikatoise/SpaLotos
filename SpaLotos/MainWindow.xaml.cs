@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace SpaLotos
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         Grid currentPage;
@@ -42,7 +40,7 @@ namespace SpaLotos
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Status();
+            StatusUpdate();
 
             if (role.Equals("admin"))
                 UserBlock.Text = "Пользователь: Администратор";
@@ -51,6 +49,8 @@ namespace SpaLotos
                 UserBlock.Text = "Пользователь: Оператор-кассир";
                 AdminButton.Visibility = Visibility.Collapsed;
             }
+
+            GridFill(ClientsGrid, "SELECT * FROM Clients");
         }
 
         private void AdminButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace SpaLotos
             }
             else
             {
-                Status();
+                StatusUpdate();
             }
         }
 
@@ -70,11 +70,14 @@ namespace SpaLotos
             if (db.Status)
             {
                 ChangePage(ClientsPage, ClientsButton);
+
             }
             else
             {
-                Status();
+                StatusUpdate();
             }
+
+            GridFill(ClientsGrid, "SELECT * FROM Clients");
         }
 
         private void ServicesButton_Click(object sender, RoutedEventArgs e)
@@ -85,7 +88,7 @@ namespace SpaLotos
             }
             else
             {
-                Status();
+                StatusUpdate();
             }
         }
 
@@ -97,7 +100,7 @@ namespace SpaLotos
             }
             else
             {
-                Status();
+                StatusUpdate();
             }
         }
 
@@ -112,7 +115,7 @@ namespace SpaLotos
             currentPage.Visibility= Visibility.Visible;
         }
 
-        void Status()
+        void StatusUpdate()
         {
             if (db.Status)
             {
@@ -124,6 +127,12 @@ namespace SpaLotos
                 statusBlock.Text = "Отключен";
                 statusBlock.Foreground = Brushes.Red;
             }
+        }
+
+        void GridFill(DataGrid grid, string request)
+        {
+            grid.ItemsSource = null;
+            grid.ItemsSource = db.TableRequest(request).DefaultView;
         }
 
     }
