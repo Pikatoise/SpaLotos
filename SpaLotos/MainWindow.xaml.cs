@@ -126,6 +126,17 @@ namespace SpaLotos
                 MessageBox.Show("Неверные данные!");
         }
 
+        private void DeleteClientsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ClientsGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM Clients WHERE IdClient = {(ClientsGrid.SelectedItem as DataRowView).Row.ItemArray[0].ToString()}");
+                GridFill(ClientsGrid, "SELECT * FROM Clients");
+            }
+            else
+                MessageBox.Show("Выберите пользователя!");
+        }
+
         void ChangePage(Grid nextPage, Button nextMenuButton)
         {
             currentMenuItem.IsEnabled= true;
