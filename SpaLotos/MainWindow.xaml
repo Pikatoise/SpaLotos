@@ -58,7 +58,7 @@
         </Grid>
 
         <!--Вкладка клиенты-->
-        <Grid x:Name="ClientsPage" Grid.Row="1" Grid.RowSpan="2" Visibility="Visible">
+        <Grid x:Name="ClientsPage" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -239,9 +239,100 @@
         </Grid>
 
         <!--Вкладка Обслужвание-->
-        <Grid x:Name="ServePage" Grid.Row="1" Visibility="Collapsed">
-            <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="333" FontSize="30" Foreground="White"/>
+        <Grid x:Name="ServePage" Grid.Row="1" Visibility="Visible" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.04*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="10 5 5 0" Grid.Column="0">
+                    <TextBlock Text="Список сессий:" Foreground="White" FontSize="16" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="10 5 5 0" Grid.Column="1">
+                    <TextBlock Text="Список оказанных услуг:" Foreground="White" FontSize="16" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox x:Name="SessionsListBox" Grid.Column="0" Background="#FF38034B" Margin="10 8 10 8" Foreground="White"/>
+
+                <DataGrid x:Name="MakedServicesGrid" Grid.Column="1" Margin="10" AutoGenerateColumns="False"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding IdMakedService}" Header="Id оказанной услуги"/>
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Название услуги"/>
+                        <DataGridTextColumn Binding="{Binding Price}" Header="Цена"/>
+                        <DataGridTextColumn Binding="{Binding FullName}" Header="ФИО клиента"/>
+                        <DataGridTextColumn Binding="{Binding Contact}" Header="Контакт клиента"/>
+                        <DataGridTextColumn Binding="{Binding FullNameWorker}" Header="ФИО мастера"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal">
+                <Button x:Name="AddSessionButton" Height="100" Width="130" Background="Green" Margin="0 0 15 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Добавить"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="DeleteSessionButton" Height="100" Width="130" Background="Red" Margin="0 0 20 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Minus" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Удалить"/>
+                    </StackPanel>
+                </Button>
+
+                <ComboBox x:Name="ServicesComboBox" 
+                          materialDesign:TextFieldAssist.UnderlineBrush="White" materialDesign:HintAssist.Hint="Услуга" materialDesign:ColorZoneAssist.Mode="Dark"
+                          Margin="0 10 20 0"  VerticalAlignment="Top" Height="40" Width="200"
+                          Foreground="White"/>
+
+                <ComboBox x:Name="ClientsComboBox" 
+                          materialDesign:TextFieldAssist.UnderlineBrush="White" materialDesign:HintAssist.Hint="Клиент" materialDesign:ColorZoneAssist.Mode="Dark"
+                          Margin="10 10 20 0"  VerticalAlignment="Top" Height="40" Width="200"
+                          Foreground="White"/>
+
+                <ComboBox x:Name="WorkerComboBox" 
+                          materialDesign:TextFieldAssist.UnderlineBrush="White" materialDesign:HintAssist.Hint="Работник" materialDesign:ColorZoneAssist.Mode="Dark"
+                          Margin="10 10 20 0"  VerticalAlignment="Top" Height="40" Width="200"
+                          Foreground="White"/>
+
+                <Button x:Name="AddMakedServiceButton" Height="60" VerticalAlignment="Top" Width="130" Background="Green" Margin="0 10 15 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Добавить"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="DeleteMakedServiceButton" Height="60" Width="130" VerticalAlignment="Top" Background="Red" Margin="0 10 20 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Minus" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Удалить"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="ChequeButton" Height="100" Width="110" VerticalAlignment="Top"  Margin="50 0 0 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileDocument" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Чек"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
 
