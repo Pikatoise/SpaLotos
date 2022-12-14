@@ -128,7 +128,7 @@
                         </StackPanel>
                     </Button>
                     <Button Height="100" Width="120" Background="Red">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="afa" Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="UserRemoveOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
                             <TextBlock Text="Удалить"/>
                         </StackPanel>
