@@ -137,6 +137,25 @@ namespace SpaLotos
                 MessageBox.Show("Выберите пользователя!");
         }
 
+        private void SearchClientsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(SearchClientsBox.Text))
+            {
+                GridFill(ClientsGrid,$"SELECT * FROM Clients WHERE Contact = '{SearchClientsBox.Text}'");
+                SearchClientsPanel.Visibility= Visibility.Collapsed;
+                UndoClientsButton.Visibility= Visibility.Visible;
+            }
+            else
+                MessageBox.Show("Введите контакт клиента!");
+        }
+
+        private void UndoClientsButton_Click(object sender, RoutedEventArgs e)
+        {
+            GridFill(ClientsGrid, "SELECT * FROM Clients");
+            UndoClientsButton.Visibility= Visibility.Collapsed;
+            SearchClientsPanel.Visibility= Visibility.Visible;
+        }
+
         void ChangePage(Grid nextPage, Button nextMenuButton)
         {
             currentMenuItem.IsEnabled= true;
