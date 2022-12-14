@@ -53,6 +53,7 @@ namespace SpaLotos
             GridFill(ClientsGrid, "SELECT * FROM Clients");
         }
 
+        #region Вкладка Админ
         private void AdminButton_Click(object sender, RoutedEventArgs e)
         {
             if (db.Status)
@@ -65,38 +66,16 @@ namespace SpaLotos
             }
         }
 
+        #endregion
+
+        #region Вкладка Клиенты
         private void ClientsButton_Click(object sender, RoutedEventArgs e)
         {
             if (db.Status)
             {
                 ChangePage(ClientsPage, ClientsButton);
+                GridFill(ClientsGrid, "SELECT * FROM Clients");
 
-            }
-            else
-            {
-                StatusUpdate();
-            }
-
-            GridFill(ClientsGrid, "SELECT * FROM Clients");
-        }
-
-        private void ServicesButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (db.Status)
-            {
-                ChangePage(ServicesPage, ServicesButton);
-            }
-            else
-            {
-                StatusUpdate();
-            }
-        }
-
-        private void ServenButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (db.Status)
-            {
-                ChangePage(ServePage, ServeButton);
             }
             else
             {
@@ -130,7 +109,7 @@ namespace SpaLotos
         {
             if (ClientsGrid.SelectedItem != null)
             {
-                db.SoloRequest($"DELETE FROM Clients WHERE IdClient = {(ClientsGrid.SelectedItem as DataRowView).Row.ItemArray[0].ToString()}");
+                db.SoloRequest($"DELETE FROM Clients WHERE IdClient = {(ClientsGrid.SelectedItem as DataRowView).Row.ItemArray[0]}");
                 GridFill(ClientsGrid, "SELECT * FROM Clients");
             }
             else
@@ -155,6 +134,80 @@ namespace SpaLotos
             UndoClientsButton.Visibility= Visibility.Collapsed;
             SearchClientsPanel.Visibility= Visibility.Visible;
         }
+        #endregion
+
+        #region Вкладка Услуги
+        private void ServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (db.Status)
+            {
+                ChangePage(ServicesPage, ServicesButton);
+                GridFill(ServicesGrid, "SELECT * FROM Services");
+            }
+            else
+            {
+                StatusUpdate();
+            }
+
+        }
+
+        private void AddServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(PriceServicesBox.Text) && !string.IsNullOrWhiteSpace(NameServicesBox.Text))
+            {
+                
+                db.SoloRequest($"INSERT INTO Services(Name,Price) VALUES ('{NameServicesBox.Text}',{PriceServicesBox.Text})");
+                GridFill(ServicesGrid, "SELECT * FROM Services");
+            }
+            else
+                MessageBox.Show("Неверные данные!");
+        }
+
+        private void DeleteServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ServicesGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM Services WHERE IdService = {(ServicesGrid.SelectedItem as DataRowView).Row.ItemArray[0]}");
+                GridFill(ServicesGrid, "SELECT * FROM Services");
+            }
+            else
+                MessageBox.Show("Выберите услугу!");
+        }
+
+        private void UndoServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            GridFill(ServicesGrid, "SELECT * FROM Services");
+            UndoServicesButton.Visibility= Visibility.Collapsed;
+            SearchServicesPanel.Visibility= Visibility.Visible;
+        }
+
+        private void SearchServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(SearchServicesBox.Text))
+            {
+                GridFill(ServicesGrid, $"SELECT * FROM Services WHERE Name LIKE '%{SearchServicesBox.Text}%'");
+                SearchServicesPanel.Visibility= Visibility.Collapsed;
+                UndoServicesButton.Visibility= Visibility.Visible;
+            }
+            else
+                MessageBox.Show("Введите название услуги!");
+        }
+        #endregion
+
+        #region Вкладка Обслуживание
+        private void ServenButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (db.Status)
+            {
+                ChangePage(ServePage, ServeButton);
+            }
+            else
+            {
+                StatusUpdate();
+            }
+        }
+
+        #endregion
 
         void ChangePage(Grid nextPage, Button nextMenuButton)
         {

@@ -15,13 +15,14 @@
             <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
 
+        <!--Шапка-->
         <Grid Grid.Row="0" Background="#FF38034B">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 10 0 0">
                 <materialDesign:PackIcon Kind="FlowerOutline" Margin="10" Height="60" Width="60" Foreground="White"/>
                 <StackPanel Margin="0 5 0 0">
                     <TextBlock Text="Спа-салон" Foreground="White" FontSize="24" FontFamily="Segoe ui black"/>
@@ -46,8 +47,7 @@
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="NotebookCheckOutline" Height="30" Width="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Обслуживание" FontSize="16" Margin="0 10 0 0"/>
-                    </StackPanel>
-                </Button>
+                    </StackPanel>                </Button>
                 <Button x:Name="AdminButton" Click="AdminButton_Click" Style="{StaticResource MaterialDesignFlatLightButton}" Foreground="White" Height="75" Width="200" Margin="0 0 5 0">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="AdministratorOutline" Height="30" Width="30" Margin="0 0 5 0"/>
@@ -55,16 +55,10 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-
         </Grid>
 
-        <Grid x:Name="AdminPage" Grid.Row="1" Visibility="Collapsed">
-            <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="444" FontSize="30" Foreground="White"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="ClientsPage" Grid.Row="1" Grid.RowSpan="2">
+        <!--Вкладка клиенты-->
+        <Grid x:Name="ClientsPage" Grid.Row="1" Grid.RowSpan="2" Visibility="Visible">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -155,19 +149,103 @@
                 </Grid>
             </Grid>
         </Grid>
-
-        <Grid x:Name="ServicesPage" Grid.Row="1" Visibility="Collapsed">
+        
+        <!--Вкладка администратора-->
+        <Grid x:Name="AdminPage" Grid.Row="1" Visibility="Collapsed">
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="222" FontSize="30" Foreground="White"/>
+                <TextBlock Text="444" FontSize="30" Foreground="White"/>
             </StackPanel>
         </Grid>
 
+        <!--Вкладка услуги-->
+        <Grid x:Name="ServicesPage" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+
+
+                <DataGrid x:Name="ServicesGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding IdService}" Header="Id услуги"/>
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Название услуги"/>
+                        <DataGridTextColumn Binding="{Binding Price}" Header="Цена"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.4*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="20 10 10 10">
+                        <Grid Margin="0 0 20 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 40 0">
+                                <materialDesign:PackIcon Kind="RenameBox" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="NameServicesBox"   Padding="5" materialDesign:HintAssist.Hint="Название услуги" materialDesign:TextFieldAssist.HasClearButton="True" Width="300" Height="30" Foreground="White" Background="#FF38034B"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="0 0 40 0">
+                                <materialDesign:PackIcon Kind="CurrencyRub" Width="30" Height="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="PriceServicesBox"  Padding="5" materialDesign:HintAssist.Hint="Цена" materialDesign:TextFieldAssist.HasClearButton="True" Width="300" Height="30" Foreground="White" Background="#FF38034B"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <Button x:Name="AddServicesButton" Click="AddServicesButton_Click" Height="100" Width="120" Background="Green" Margin="0 0 30 0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BookAdd" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Добавить"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="DeleteServicesButton" Click="DeleteServicesButton_Click" Height="100" Width="120" Background="Red">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BookRemove" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Удалить"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="UndoServicesButton" Click="UndoServicesButton_Click" Height="100" Width="200" Margin="0 10 20 10" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Undo" Width="30" Height="30" Foreground="White" Margin="0 0 5 0"/>
+                                <TextBlock Text="Отменить" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <StackPanel x:Name="SearchServicesPanel" Margin="0 10 20 10">
+                            <TextBox x:Name="SearchServicesBox" Padding="5 15 0 0" materialDesign:HintAssist.Hint="Поиск по названию" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="40" Foreground="White" Background="#FF38034B" Margin="0 0 0 20"/>
+                            <Button x:Name="SearchServicesButton" Click="SearchServicesButton_Click"  Height="40" Width="200">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="AccountSearchOutline" Width="30" Height="30" Foreground="White" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Найти" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!--Вкладка Обслужвание-->
         <Grid x:Name="ServePage" Grid.Row="1" Visibility="Collapsed">
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Text="333" FontSize="30" Foreground="White"/>
             </StackPanel>
         </Grid>
 
+        <!--Нижняя панель-->
         <StackPanel Grid.Row="3" Background="#FF38034B" Orientation="Horizontal">
             <TextBlock Text="Статус сервера: " Foreground="White" VerticalAlignment="Center" Margin="5 0 0 0"/>
             <TextBlock x:Name="StatusBlock" VerticalAlignment="Center" Margin="0 0 10 0"/>
