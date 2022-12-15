@@ -202,6 +202,9 @@ namespace SpaLotos
             {
                 ChangePage(ServePage, ServeButton);
                 ListBoxFill(ServeListBox,"SELECT * FROM Sessions");
+                ComboBoxFill(ClientsComboBox,"IdClient,FullName,Contact","Clients");
+                ComboBoxFill(WorkerComboBox, "IdWorker,FullNameWorker,Contact", "Workers");
+                ComboBoxFill(ServicesComboBox, "IdService,Name,Price", "Services");
 
                 MakedServicesGrid.ItemsSource = null;
             }
@@ -240,12 +243,24 @@ namespace SpaLotos
 
         private void AddMakedServiceButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ClientsComboBox.SelectedItem != null && ServicesComboBox.SelectedItem != null && ServeListBox.SelectedItem != null && WorkerComboBox.SelectedItem != null)
+            {
+                db.SoloRequest($"INSERT INTO MakedService(IdClient,IdService,IdWorker,IdSession) VALUES ({(ClientsComboBox.SelectedItem as ComboBoxItem).Tag},{(ServicesComboBox.SelectedItem as ComboBoxItem).Tag},{(WorkerComboBox.SelectedItem as ComboBoxItem).Tag},{(ServeListBox.SelectedItem as ListBoxItem).Tag})");
+                GridFill(MakedServicesGrid, $"SELECT ms.IdMakedService,s.Name,s.Price,c.FullName,c.Contact,w.FullNameWorker FROM Sessions as ss JOIN MakedService as ms ON ms.IdSession = ss.IdSession JOIN Services as s ON s.IdService = ms.IdService JOIN Clients as c ON c.IdClient = ms.IdClient JOIN Workers as w ON w.IdWorker = ms.IdWorker WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}; ");
+            }
+            else
+                MessageBox.Show("Все поля обязательны к выбору!");
         }
 
         private void DeleteMakedServiceButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MakedServicesGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM MakedService WHERE IdMakedService = {(MakedServicesGrid.SelectedItem as DataRowView).Row.ItemArray[0]}"); GridFill(MakedServicesGrid, $"SELECT ms.IdMakedService,s.Name,s.Price,c.FullName,c.Contact,w.FullNameWorker FROM Sessions as ss JOIN MakedService as ms ON ms.IdSession = ss.IdSession JOIN Services as s ON s.IdService = ms.IdService JOIN Clients as c ON c.IdClient = ms.IdClient JOIN Workers as w ON w.IdWorker = ms.IdWorker WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}; ");
+                GridFill(MakedServicesGrid, $"SELECT ms.IdMakedService,s.Name,s.Price,c.FullName,c.Contact,w.FullNameWorker FROM Sessions as ss JOIN MakedService as ms ON ms.IdSession = ss.IdSession JOIN Services as s ON s.IdService = ms.IdService JOIN Clients as c ON c.IdClient = ms.IdClient JOIN Workers as w ON w.IdWorker = ms.IdWorker WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}; ");
+            }
+            else
+                MessageBox.Show("Выберите оказанную услугу!");
         }
 
         private void ChequeButton_Click(object sender, RoutedEventArgs e)
@@ -303,10 +318,28 @@ namespace SpaLotos
                 lb.Items.Add(item);
             }
 
+            reader.Close();
+        }
+
+        void ComboBoxFill(ComboBox box,string fields, string table)
+        {
+            box.Items.Clear();
+
+            MySqlDataReader reader = db.MultyRequest($"SELECT {fields} FROM {table}");
+            string[] field = fields.Split(new string[] { "," }, StringSplitOptions.None);
+            while (reader.Read())
+            {
+                ComboBoxItem item = new ComboBoxItem()
+                {
+                    Content = $"{reader[field[1]]}\n{reader[field[2]]}",
+                    Tag = reader[field[0]].ToString()
+                };
+
+                box.Items.Add(item);
+            }
 
             reader.Close();
         }
         #endregion
-
     }
 }
