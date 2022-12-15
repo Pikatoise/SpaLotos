@@ -218,6 +218,35 @@ namespace SpaLotos
         {
             if (ServeListBox.Items.Count > 0)
                 GridFill(MakedServicesGrid, $"SELECT ms.IdMakedService,s.Name,s.Price,c.FullName,c.Contact,w.FullNameWorker FROM Sessions as ss JOIN MakedService as ms ON ms.IdSession = ss.IdSession JOIN Services as s ON s.IdService = ms.IdService JOIN Clients as c ON c.IdClient = ms.IdClient JOIN Workers as w ON w.IdWorker = ms.IdWorker WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}; ");
+
+            if (ServeListBox.SelectedItem == null)
+            {
+                ClientsComboBox.Visibility = Visibility.Hidden;
+                ServicesComboBox.Visibility= Visibility.Hidden;
+                WorkerComboBox.Visibility= Visibility.Hidden;
+                AddMakedServiceButton.Visibility= Visibility.Hidden;
+                DeleteMakedServiceButton.Visibility= Visibility.Hidden;
+            }
+            else
+            {
+                string idCheque = db.SoloRequest($"SELECT IdCheque FROM Cheque WHERE IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}");
+                if (idCheque != null)
+                {
+                    ClientsComboBox.Visibility = Visibility.Hidden;
+                    ServicesComboBox.Visibility= Visibility.Hidden;
+                    WorkerComboBox.Visibility= Visibility.Hidden;
+                    AddMakedServiceButton.Visibility= Visibility.Hidden;
+                    DeleteMakedServiceButton.Visibility= Visibility.Hidden;
+                }
+                else
+                {
+                    ClientsComboBox.Visibility = Visibility.Visible;
+                    ServicesComboBox.Visibility= Visibility.Visible;
+                    WorkerComboBox.Visibility= Visibility.Visible;
+                    AddMakedServiceButton.Visibility= Visibility.Visible;
+                    DeleteMakedServiceButton.Visibility= Visibility.Visible;
+                }
+            }
         }
 
         private void AddSessionButton_Click(object sender, RoutedEventArgs e)
@@ -265,7 +294,28 @@ namespace SpaLotos
 
         private void ChequeButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ServeListBox.SelectedItem != null)
+            {
+                string idCheque = db.SoloRequest($"SELECT IdCheque FROM Cheque WHERE IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}");
+                if (idCheque != null)
+                {
+                    OpenCheck((ServeListBox.SelectedItem as ListBoxItem).Tag.ToString());
+                }
+                else
+                {
+                    db.SoloRequest($"INSERT INTO Cheque (IdSession, FinalSum, DateCheque) VALUES ({(ServeListBox.SelectedItem as ListBoxItem).Tag},(SELECT SUM(Price) FROM Sessions AS ss JOIN MakedService AS m ON m.IdSession = ss.IdSession JOIN Services AS s ON s.IdService = m.IdService WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}),'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}')");
+                    ClientsComboBox.Visibility = Visibility.Hidden;
+                    ServicesComboBox.Visibility= Visibility.Hidden;
+                    WorkerComboBox.Visibility= Visibility.Hidden;
+                    AddMakedServiceButton.Visibility= Visibility.Hidden;
+                    DeleteMakedServiceButton.Visibility= Visibility.Hidden;
 
+                    OpenCheck((ServeListBox.SelectedItem as ListBoxItem).Tag.ToString());
+                }
+
+            }
+            else
+                MessageBox.Show("Выберите сессию для формирования чека!");
         }
         #endregion
 
@@ -339,6 +389,17 @@ namespace SpaLotos
             }
 
             reader.Close();
+        }
+
+        void OpenCheck(string IdSession)
+        {
+            string client = db.SoloRequest($"SELECT c.FullName FROM Clients as c JOIN MakedService as ms ON ms.IdClient = c.IdClient JOIN Sessions as s ON s.IdSession = ms.IdSession WHERE S.IdSession = {IdSession}");
+            string worker = db.SoloRequest($"SELECT w.FullNameWorker FROM Workers as w JOIN MakedService as ms ON ms.IdWorker = w.IdWorker JOIN Sessions as s ON s.IdSession = ms.IdSession WHERE S.IdSession = {IdSession}");
+            string price = db.SoloRequest($"SELECT FinalSum FROM Cheque WHERE IdSession = {IdSession}");
+            string date = db.SoloRequest($"SELECT DateCheque FROM Cheque WHERE IdSession = {IdSession}");
+
+            Cheque chequeForm = new Cheque(client,worker,price,date);
+            chequeForm.ShowDialog();
         }
         #endregion
     }
