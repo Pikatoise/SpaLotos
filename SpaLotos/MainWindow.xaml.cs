@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -200,6 +201,9 @@ namespace SpaLotos
             if (db.Status)
             {
                 ChangePage(ServePage, ServeButton);
+                ListBoxFill(ServeListBox,"SELECT * FROM Sessions");
+
+                MakedServicesGrid.ItemsSource = null;
             }
             else
             {
@@ -207,8 +211,50 @@ namespace SpaLotos
             }
         }
 
+        private void ServeListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ServeListBox.Items.Count > 0)
+                GridFill(MakedServicesGrid, $"SELECT ms.IdMakedService,s.Name,s.Price,c.FullName,c.Contact,w.FullNameWorker FROM Sessions as ss JOIN MakedService as ms ON ms.IdSession = ss.IdSession JOIN Services as s ON s.IdService = ms.IdService JOIN Clients as c ON c.IdClient = ms.IdClient JOIN Workers as w ON w.IdWorker = ms.IdWorker WHERE ss.IdSession = {(ServeListBox.SelectedItem as ListBoxItem).Tag}; ");
+        }
+
+        private void AddSessionButton_Click(object sender, RoutedEventArgs e)
+        {
+            db.SoloRequest($"INSERT INTO Sessions(starttime) VALUES('{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}')");
+            ListBoxFill(ServeListBox, "SELECT * FROM Sessions");
+        }
+
+        private void DeleteSessionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ServeListBox.SelectedItem != null)
+            {
+                string currentSession = (ServeListBox.SelectedItem as ListBoxItem).Tag.ToString();
+                db.SoloRequest($"DELETE FROM Cheque WHERE IdSession = {currentSession}");
+                db.SoloRequest($"DELETE FROM MakedService WHERE IdSession = {currentSession}");
+                db.SoloRequest($"DELETE FROM Sessions WHERE IdSession = {currentSession}");
+                ListBoxFill(ServeListBox, "SELECT * FROM Sessions");
+
+            }
+            else
+                MessageBox.Show("Выберите сессию!");
+        }
+
+        private void AddMakedServiceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteMakedServiceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ChequeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
 
+        #region Общие методы
         void ChangePage(Grid nextPage, Button nextMenuButton)
         {
             currentMenuItem.IsEnabled= true;
@@ -239,6 +285,28 @@ namespace SpaLotos
             grid.ItemsSource = null;
             grid.ItemsSource = db.TableRequest(request).DefaultView;
         }
+
+        void ListBoxFill(ListBox lb, string request)
+        {
+            lb.Items.Clear();
+
+            MySqlDataReader reader = db.MultyRequest(request);
+
+            while (reader.Read())
+            {
+                ListBoxItem item = new ListBoxItem()
+                {
+                    Content = $"Сессия №{reader["IdSession"]}\n{reader["StartTime"]}",
+                    Tag = reader["IdSession"].ToString()
+                };
+
+                lb.Items.Add(item);
+            }
+
+
+            reader.Close();
+        }
+        #endregion
 
     }
 }

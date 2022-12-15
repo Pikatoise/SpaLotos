@@ -85,7 +85,19 @@ namespace SpaLotos
 
         public MySqlDataReader MultyRequest(string request)
         {
-            return null;
+            MySqlCommand command = new MySqlCommand(request,connection);
+            MySqlDataReader reader = null;
+            try
+            {
+                connection.OpenAsync();
+                reader = command.ExecuteReader();
+                //connection.CloseAsync();
+            } catch (Exception e)
+            {
+                MessageBox.Show($"{e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return reader;
         }
     }
 }
