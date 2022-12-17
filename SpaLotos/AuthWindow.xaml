@@ -6,11 +6,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:SpaLotos"
         mc:Ignorable="d"
-        Title ="Авторизация" Height="400" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title ="Авторизация" Height="420" Width="320" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid Background="#530271">
-        <materialDesign:Card x:Name="MainCard" Margin="30" Background="WhiteSmoke">
+        <materialDesign:Card x:Name="MainCard" Margin="40" Background="WhiteSmoke">
             <materialDesign:Card.Effect>
-                <DropShadowEffect BlurRadius="30"/>
+                <DropShadowEffect BlurRadius="50"/>
             </materialDesign:Card.Effect>
             <Grid>
                 <Grid.RowDefinitions>

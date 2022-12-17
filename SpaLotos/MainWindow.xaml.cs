@@ -60,6 +60,10 @@ namespace SpaLotos
             if (db.Status)
             {
                 ChangePage(AdminPage,AdminButton);
+                GridFill(WorkersGrid,"SELECT w.IdWorker,w.FullNameWorker,p.Name,p.Salary,w.Contact,w.Birthday FROM Workers as w JOIN Positions as p ON p.IdPosition = w.IdPosition");
+                GridFill(PositionsGrid, "SELECT * FROM Positions");
+                GridFill(UsersGrid,"SELECT * FROM Users");
+                ComboBoxFill(PositionComboBox,"IdPosition,Name,Salary","Positions");
             }
             else
             {
@@ -67,6 +71,105 @@ namespace SpaLotos
             }
         }
 
+        private void AddWorkerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (BirthdayWorkerPicker.SelectedDate != null && !string.IsNullOrWhiteSpace(ContactWorkersBox.Text) && !string.IsNullOrWhiteSpace(FioWorkersBox.Text) && PositionComboBox.SelectedItem != null)
+            {
+                bool isExist = false;
+                foreach (object o in WorkersGrid.Items)
+                    if ((o as DataRowView).Row.ItemArray[4].ToString().Equals(ContactWorkersBox.Text))
+                    {
+                        MessageBox.Show("Работник с таким контактом уже существует!");
+                        isExist = true;
+                        break;
+                    }
+                if (!isExist)
+                {
+                    db.SoloRequest($"INSERT INTO Workers(IdPosition,Contact,Birthday,FullNameWorker) VALUES ({(PositionComboBox.SelectedItem as ComboBoxItem).Tag},'{ContactWorkersBox.Text}','{Convert.ToDateTime(BirthdayWorkerPicker.SelectedDate).ToString("yyyy-MM-dd")}','{FioWorkersBox.Text}')");
+                    GridFill(WorkersGrid, "SELECT w.IdWorker,w.FullNameWorker,p.Name,p.Salary,w.Contact,w.Birthday FROM Workers as w JOIN Positions as p ON p.IdPosition = w.IdPosition");
+                }
+            }
+            else
+                MessageBox.Show("Неверные данные!");
+        }
+
+        private void DeleteWorkerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WorkersGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM Workers WHERE IdWorker = {(WorkersGrid.SelectedItem as DataRowView).Row.ItemArray[0]}");
+                GridFill(WorkersGrid, "SELECT w.IdWorker,w.FullNameWorker,p.Name,p.Salary,w.Contact,w.Birthday FROM Workers as w JOIN Positions as p ON p.IdPosition = w.IdPosition");
+
+            }
+            else
+                MessageBox.Show("Выберите работника!");
+        }
+
+        private void AddPositionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(PositionNameBox.Text) && !string.IsNullOrWhiteSpace(SalaryBox.Text))
+            {
+                bool isExist = false;
+                foreach (object o in PositionsGrid.Items)
+                    if ((o as DataRowView).Row.ItemArray[1].ToString().Equals(PositionNameBox.Text))
+                    {
+                        MessageBox.Show("Должность с таким названием уже существует!");
+                        isExist = true;
+                        break;
+                    }
+                if (!isExist)
+                {
+                    db.SoloRequest($"INSERT INTO Positions(Name,Salary) VALUES ('{PositionNameBox.Text}',{SalaryBox.Text})");
+                    GridFill(PositionsGrid, "SELECT * FROM Positions");
+                }
+            }
+            else
+                MessageBox.Show("Неверные данные!");
+        }
+
+        private void DeletePositionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PositionsGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM Positions WHERE IdPosition = {(PositionsGrid.SelectedItem as DataRowView).Row.ItemArray[0]}");
+                GridFill(PositionsGrid, "SELECT * FROM Positions");
+            }
+            else
+                MessageBox.Show("Выберите должность!");
+        }
+
+        private void AddUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(LoginBox.Text) && !string.IsNullOrWhiteSpace(PasswordBox.Text) && !string.IsNullOrWhiteSpace(RoleComboBox.Text))
+            {
+                bool isExist = false;
+                foreach (object o in UsersGrid.Items)
+                    if ((o as DataRowView).Row.ItemArray[1].ToString().Equals(LoginBox.Text))
+                    {
+                        MessageBox.Show("Аккаунт с таким логином уже существует!");
+                        isExist = true;
+                        break;
+                    }
+                if (!isExist)
+                {
+                    db.SoloRequest($"INSERT INTO Users(Login,Password,Role) VALUES ('{LoginBox.Text}','{PasswordBox.Text}','{RoleComboBox.Text}')");
+                    GridFill(UsersGrid, "SELECT * FROM Users");
+                }
+            }
+            else
+                MessageBox.Show("Неверные данные!");
+        }
+
+        private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (UsersGrid.SelectedItem != null)
+            {
+                db.SoloRequest($"DELETE FROM Users WHERE IdUser = {(UsersGrid.SelectedItem as DataRowView).Row.ItemArray[0]}");
+                GridFill(UsersGrid, "SELECT * FROM Users");
+            }
+            else
+                MessageBox.Show("Выберите пользователя!");
+        }
         #endregion
 
         #region Вкладка Клиенты
@@ -402,5 +505,6 @@ namespace SpaLotos
             chequeForm.ShowDialog();
         }
         #endregion
+
     }
 }

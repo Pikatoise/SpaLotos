@@ -151,10 +151,161 @@
         </Grid>
         
         <!--Вкладка администратора-->
-        <Grid x:Name="AdminPage" Grid.Row="1" Visibility="Collapsed">
-            <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="444" FontSize="30" Foreground="White"/>
-            </StackPanel>
+        <Grid x:Name="AdminPage" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.9*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.15*"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid x:Name="WorkersGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding IdWorker}" Header="Id Работника"/>
+                        <DataGridTextColumn Binding="{Binding FullNameWorker}" Header="ФИО Работника"/>
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Должность"/>
+                        <DataGridTextColumn Binding="{Binding Salary}" Header="Заработная плата"/>
+                        <DataGridTextColumn Binding="{Binding Contact}" Header="Контакт"/>
+                        <DataGridTextColumn Binding="{Binding Birthday}" Header="Дата рождения"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Margin="10 0 10 0" Orientation="Horizontal">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 10 20">
+                            <materialDesign:PackIcon Kind="AccountEditOutline" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                            <TextBox x:Name="FioWorkersBox"   Padding="5" materialDesign:HintAssist.Hint="ФИО" materialDesign:TextFieldAssist.HasClearButton="True" Width="250" Height="30" Foreground="Black" Background="White"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="PhoneOutline" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                            <TextBox x:Name="ContactWorkersBox"   Padding="5" materialDesign:HintAssist.Hint="Контакт" materialDesign:TextFieldAssist.HasClearButton="True" Width="250" Height="30" Foreground="Black" Background="White"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 10 20">
+                            <materialDesign:PackIcon Kind="CakeVariantOutline" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                            <DatePicker x:Name="BirthdayWorkerPicker" Width="150" materialDesign:HintAssist.Hint="Дата рождения" materialDesign:TextFieldAssist.HasClearButton="True" Height="30" Background="White" Padding="5" Foreground="Black"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="OfficeBuildingOutline" Height="30" Width="30" Foreground="White"/>
+                            <ComboBox x:Name="PositionComboBox"
+                              materialDesign:TextFieldAssist.UnderlineBrush="White" materialDesign:HintAssist.Hint="Должность" materialDesign:ColorZoneAssist.Mode="Light"
+                              Margin="10 0 10 0" VerticalAlignment="Center" Height="30" Width="150" Padding="5"
+                              Foreground="Black" Background="White"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button x:Name="AddWorkerButton" Click="AddWorkerButton_Click" Height="85" Width="120" Background="Green" Margin="0 0 10 0" VerticalAlignment="Top" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Invite" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                            <TextBlock Text="Добавить"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="DeleteWorkerButton" Click="DeleteWorkerButton_Click" Height="85" Width="120" VerticalAlignment="Top" Background="Red" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="UserRemoveOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                            <TextBlock Text="Удалить"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <DataGrid x:Name="UsersGrid" Grid.Row="0" Margin="5 10 10 10" AutoGenerateColumns="False" Height="250"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding IdUser}" Header="Id Пользователя"/>
+                            <DataGridTextColumn Binding="{Binding Login}" Header="Логин"/>
+                            <DataGridTextColumn Binding="{Binding Password}" Header="Пароль"/>
+                            <DataGridTextColumn Binding="{Binding Role}" Header="Роль"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
+                                <materialDesign:PackIcon Kind="UserOutline" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="PasswordBox"   Padding="5" materialDesign:HintAssist.Hint="Логин" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Foreground="Black" Background="White"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 20 10 0">
+                                <materialDesign:PackIcon Kind="KeyOutline" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="LoginBox"   Padding="5" materialDesign:HintAssist.Hint="Пароль" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" Height="30" Foreground="Black" Background="White"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <ComboBox x:Name="RoleComboBox" 
+                              materialDesign:TextFieldAssist.UnderlineBrush="White" materialDesign:HintAssist.Hint="Роль" materialDesign:ColorZoneAssist.Mode="Light"
+                              Margin="0 0 8 55" VerticalAlignment="Center" Height="30" Width="150" Padding="5"
+                              Foreground="Black" Background="White">
+                            <ComboBoxItem Content="admin"/>
+                            <ComboBoxItem Content="operator"/>
+                        </ComboBox>
+
+                        <Button x:Name="AddUserButton" Click="AddUserButton_Click" Height="85" Width="120" Background="Green" Margin="15 0 20 0" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Invite" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Добавить"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="DeleteUserButton" Click="DeleteUserButton_Click" Height="85" Width="120" Background="Red" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="UserRemoveOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Удалить"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                    <DataGrid x:Name="PositionsGrid" Grid.Row="0" Margin="5 10 10 10" AutoGenerateColumns="False" Height="250"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding IdPosition}" Header="Id Должности"/>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Название должности"/>
+                            <DataGridTextColumn Binding="{Binding Salary}" Header="Заработная плата"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
+                                <materialDesign:PackIcon Kind="RenameBox" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="PositionNameBox"   Padding="5" materialDesign:HintAssist.Hint="Название должности" materialDesign:TextFieldAssist.HasClearButton="True" Width="250" Height="30" Foreground="Black" Background="White"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 20 10 0">
+                                <materialDesign:PackIcon Kind="Cash" Height="30" Width="30" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBox x:Name="SalaryBox"   Padding="5" materialDesign:HintAssist.Hint="Заработная плата" materialDesign:TextFieldAssist.HasClearButton="True" Width="250" Height="30" Foreground="Black" Background="White"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Button x:Name="AddPositionButton" Click="AddPositionButton_Click" Height="85" Width="120" Background="Green" Margin="123 0 20 0" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Invite" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Добавить"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="DeletePositionButton" Click="DeletePositionButton_Click" Height="85" Width="120" Background="Red" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="UserRemoveOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Удалить"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
 
         <!--Вкладка услуги-->
