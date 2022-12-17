@@ -5,6 +5,7 @@ using System.Windows.Media.Animation;
 using System;
 using System.Windows.Media.Effects;
 using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace SpaLotos
 {
@@ -28,6 +29,8 @@ namespace SpaLotos
                 PasswordBox.IsEnabled= false;
                 AuthButton.IsEnabled= false;
             }
+
+            ShadowAnimation();
         }
 
         private void LoginBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -67,5 +70,27 @@ namespace SpaLotos
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MainBorder_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        async void ShadowAnimation()
+        {
+            while (true)
+            {
+                if (ShadowEffect.Direction >= 360)
+                    ShadowEffect.Direction = 0;
+
+                ShadowEffect.Direction += 10;
+
+                await Task.Delay(50);
+            }
+        }
     }
 }
