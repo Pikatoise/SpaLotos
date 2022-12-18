@@ -238,6 +238,40 @@ namespace SpaLotos
             UndoClientsButton.Visibility= Visibility.Collapsed;
             SearchClientsPanel.Visibility= Visibility.Visible;
         }
+
+        private void EditClientsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ClientsGrid.SelectedItem != null)
+            {
+                if (!string.IsNullOrWhiteSpace(FioClientsBox.Text) && !string.IsNullOrWhiteSpace(ContactClientsBox.Text) && !string.IsNullOrWhiteSpace(AgeClientsBox.Text) && !string.IsNullOrWhiteSpace(GenderClientsBox.Text) && GenderClientsBox.Text.Length == 1)
+                {
+                    db.SoloRequest($"UPDATE Clients SET FullName = '{FioClientsBox.Text}', Contact = '{ContactClientsBox.Text}', Age = {AgeClientsBox.Text}, Gender = '{GenderClientsBox.Text}' WHERE IdClient = {(ClientsGrid.SelectedItem as DataRowView)["IdClient"]}");
+                    GridFill(ClientsGrid, "SELECT * FROM Clients");
+                }
+                else
+                    MessageBox.Show("Неверные данные!");
+            }
+            else
+                MessageBox.Show("Выберите клиента!");
+        }
+
+        private void ClientsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ClientsGrid.Items.Count > 0 && ClientsGrid.SelectedItem != null)
+            {
+                FioClientsBox.Text = (ClientsGrid.SelectedItem as DataRowView)["FullName"].ToString();
+                ContactClientsBox.Text = (ClientsGrid.SelectedItem as DataRowView)["Contact"].ToString();
+                GenderClientsBox.Text = (ClientsGrid.SelectedItem as DataRowView)["Gender"].ToString();
+                AgeClientsBox.Text = (ClientsGrid.SelectedItem as DataRowView)["Age"].ToString();
+            }
+            else
+            {
+                FioClientsBox.Text = "";
+                ContactClientsBox.Text = "";
+                GenderClientsBox.Text = "";
+                AgeClientsBox.Text = "";
+            }
+        }
         #endregion
 
         #region Вкладка Услуги

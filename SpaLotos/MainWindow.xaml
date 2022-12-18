@@ -66,7 +66,7 @@
                 </Grid.RowDefinitions>
 
 
-                <DataGrid x:Name="ClientsGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False"
+                <DataGrid x:Name="ClientsGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionChanged="ClientsGrid_SelectionChanged"
                           CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
                           BorderBrush="Black" HorizontalGridLinesBrush="DarkGray" VerticalGridLinesBrush="DarkGray" VerticalScrollBarVisibility="Auto" GridLinesVisibility="All">
                     <DataGrid.Columns>
@@ -115,13 +115,19 @@
                         </StackPanel>
 
                     </Grid>
-                        <Button x:Name="AddClientsButton" Click="AddClientsButton_Click" Height="100" Width="120" Background="Green" Margin="0 0 30 0">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Invite" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
-                            <TextBlock Text="Добавить"/>
-                        </StackPanel>
+                    <Button x:Name="AddClientsButton" Click="AddClientsButton_Click" Height="100" Width="120" Background="Green" Margin="0 0 30 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountsAddOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                        <TextBlock Text="Добавить"/>
+                    </StackPanel>
                     </Button>
-                    <Button x:Name="DeleteClientsButton" Click="DeleteClientsButton_Click" Height="100" Width="120" Background="Red">
+                        <Button x:Name="EditClientsButton" Click="EditClientsButton_Click" Height="100" Width="124" Margin="0 0 30 0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountEditOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
+                                <TextBlock Text="Изменить"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="DeleteClientsButton" Click="DeleteClientsButton_Click" Height="100" Width="120" Background="Red">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="UserRemoveOutline" Width="20" Height="20" Foreground="White" Margin="0 0 4 0"/>
                             <TextBlock Text="Удалить"/>
