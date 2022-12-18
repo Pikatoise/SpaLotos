@@ -330,6 +330,36 @@ namespace SpaLotos
             else
                 MessageBox.Show("Введите название услуги!");
         }
+
+        private void EditServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ServicesGrid.SelectedItem != null)
+            {
+                if (!string.IsNullOrWhiteSpace(NameServicesBox.Text) && !string.IsNullOrWhiteSpace(PriceServicesBox.Text))
+                {
+                    db.SoloRequest($"UPDATE Services SET Name = '{NameServicesBox.Text}', Price = {PriceServicesBox.Text} WHERE IdService = {(ServicesGrid.SelectedItem as DataRowView)["IdService"]}");
+                    GridFill(ServicesGrid, "SELECT * FROM Services");
+                }
+                else
+                    MessageBox.Show("Неверные данные!");
+            }
+            else
+                MessageBox.Show("Выберите услугу!");
+        }
+
+        private void ServicesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ServicesGrid.Items.Count > 0 && ServicesGrid.SelectedItem != null)
+            {
+                NameServicesBox.Text = (ServicesGrid.SelectedItem as DataRowView)["Name"].ToString();
+                PriceServicesBox.Text = (ServicesGrid.SelectedItem as DataRowView)["Price"].ToString();
+            }
+            else
+            {
+                NameServicesBox.Text = "";
+                PriceServicesBox.Text = "";
+            }
+        }
         #endregion
 
         #region Вкладка Обслуживание

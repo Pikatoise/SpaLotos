@@ -87,9 +87,9 @@ namespace SpaLotos
                 if (ShadowEffect.Direction >= 360)
                     ShadowEffect.Direction = 0;
 
-                ShadowEffect.Direction += 10;
+                ShadowEffect.Direction += 20;
 
-                await Task.Delay(50);
+                await Task.Delay(100);
             }
         }
     }
